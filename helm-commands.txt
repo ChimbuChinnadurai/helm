@@ -21,7 +21,6 @@ $ helm repo add bitnami https://charts.bitnami.com/bitnami
 $ helm repo add mirantis https://charts.mirantis.com
 
 
-
 # update repos index
 $ helm repo update
 
@@ -39,9 +38,9 @@ $ helm pull chartrepo/chartname
 
 
 # render the template:
-$ helm template <release-name> <chart> - Render the template 
+$ helm template <release-name> <chart> 
 $ helm template --debug <chart>
-$ helm template --debug <chart> -f override-values.yaml - override values
+$ helm template --debug <chart> -f override-values.yaml 
 
 # deploy a chart/release:
 $ helm install <release-name> <chart>  - helm install demo-sql stable/mysql
@@ -74,9 +73,9 @@ $ helm list --all
 
 # upgrade a release
 $ helm upgrade <release-name> <chart>
-$ helm upgrade -f <release-name> <chart>
+$ helm upgrade -f <values-file> <release-name> <chart-name>
 $ helm upgrade my-apache bitnami/apache --version 8.0.3
-$ helm upgrade --install <release name> --values <values file> <chart directory>
+$ helm upgrade --install <release-name> --values <values-file> <chart-name>
 
 
 # rollback a release:
@@ -87,11 +86,11 @@ $ helm rollback <release-name> <revision-number> - helm rollback demo-guestbook 
 $ helm history <release-name>
 
 
-# get/display release status:
+# get/display release status
 $ helm status <release-name> 
 
 
-# delete a release:
+# delete a release
 $ helm delete <release-name> - for helm2
 $ helm uninstall <release-name> - for helm3
 $ helm uninstall --keep-history <release-name>
@@ -154,25 +153,8 @@ $ helm push-artifactory xyz-demofile-0.1.1.tgz http://localhost:8081/artifactory
 $ helm lint <chart-name>
 
 
-
-Templates:
-
-image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
-secret_key: {{ .Values.mysecret | b64enc | quote }}
-
-
-
-if-else:
-
-type: {{ .Values.service.type }}
-ports:
-- port: {{ .Values.service.externalPort }}
-  targetPort: {{ .Values.service.internalPort }}
-  protocol: TCP
-{{- if .Values.service.tls  }}
-  name: "https-{{ .Values.service.name }}"
-{{- else }}
-  name: "{{ .Values.service.name }}"
-{{ end }}
-
-
+# helm plugins
+$ helm plugin list
+$ helm plugin install https://github.com/databus23/helm-diff
+$ helm diff revision <release-name> 1 2
+$ helm plugin uninstall diff
